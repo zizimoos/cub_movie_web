@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { movieApi, tvApi } from "../../api";
 import SearchPresenter from "./SearchPresenter";
 
@@ -26,6 +26,7 @@ export const SearchContainer = () => {
     setState({ searchTerm: value });
   };
   const searchByTerm = async (searchTerm) => {
+    setState({ loading: true });
     try {
       const {
         data: { results: tvResults },
