@@ -33,13 +33,13 @@ export const TvContainer = () => {
     } catch (error) {
       setState({ error: "Can't get the data" });
     } finally {
-      setState({ loading: false });
     }
   };
 
   useEffect(() => {
     getData();
   }, []);
+
   console.log(state);
   const { topRated, popular, airingToday, loading, error } = state;
   return (

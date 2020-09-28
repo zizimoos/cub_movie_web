@@ -11,7 +11,21 @@ export const SearchContainer = () => {
     error: null,
   });
 
-  const getData = async (searchTerm) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const { searchTerm } = state;
+    if (searchTerm !== "") {
+      searchByTerm(searchTerm);
+    }
+  };
+  const updateTerm = (event) => {
+    event.preventDefault();
+    const {
+      target: { value },
+    } = event;
+    setState({ searchTerm: value });
+  };
+  const searchByTerm = async (searchTerm) => {
     try {
       const {
         data: { results: tvResults },
@@ -19,24 +33,19 @@ export const SearchContainer = () => {
       const {
         data: { results: movieResults },
       } = await movieApi.movieSearch(searchTerm);
-
+      // throw Error();
       setState({
         movieResults,
         tvResults,
         searchTerm,
-        loading: true,
+        loading: false,
         error,
       });
-    } catch (error) {
-      setState({ error: "Can't get the data" });
+    } catch {
+      setState({ error: "Can't find results" });
     } finally {
-      setState({ loading: false });
     }
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   console.log(state);
   const { movieResults, tvResults, searchTerm, loading, error } = state;
@@ -44,11 +53,13 @@ export const SearchContainer = () => {
     <SearchPresenter
       movieResults={movieResults}
       tvResults={tvResults}
-      searchTerm={searchTerm}
       loading={loading}
+      searchTerm={searchTerm}
       error={error}
+      handleSubmit={handleSubmit}
+      updateTerm={updateTerm}
     ></SearchPresenter>
   );
 };
 
-export default SearchPresenter;
+export default SearchContainer;

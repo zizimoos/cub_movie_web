@@ -22,7 +22,7 @@ export const HomeContainer = () => {
       const {
         data: { results: popular },
       } = await movieApi.popular();
-
+      // throw Error();
       setState({
         nowPlaying,
         upcoming,
@@ -33,7 +33,7 @@ export const HomeContainer = () => {
     } catch (error) {
       setState({ error: "Can't get the data" });
     } finally {
-      setState({ loading: false });
+      // setState({ loading: false });
     }
   };
 
