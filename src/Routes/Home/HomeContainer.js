@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { movieApi } from "../../api";
 import HomePresenter from "./HomePresenter";
+import { Helmet } from "react-helmet";
 
 export const HomeContainer = () => {
   const [state, setState] = useState({
@@ -31,7 +32,7 @@ export const HomeContainer = () => {
         error: null,
       });
     } catch (error) {
-      setState({ error: "Can't get the data" });
+      setState({ error: "Sorry Can't get the data" });
     } finally {
       // setState({ loading: false });
     }
@@ -41,16 +42,21 @@ export const HomeContainer = () => {
     getData();
   }, []);
 
-  console.log(state);
   const { nowPlaying, upcoming, popular, loading, error } = state;
   return (
-    <HomePresenter
-      nowPlaying={nowPlaying}
-      upcoming={upcoming}
-      popular={popular}
-      loading={loading}
-      error={error}
-    ></HomePresenter>
+    <>
+      <Helmet>
+        <title>CubsMovie | Movies</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
+      <HomePresenter
+        nowPlaying={nowPlaying}
+        upcoming={upcoming}
+        popular={popular}
+        loading={loading}
+        error={error}
+      ></HomePresenter>
+    </>
   );
 };
 

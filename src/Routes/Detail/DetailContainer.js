@@ -33,7 +33,7 @@ const DetailContainer = (props) => {
         const { data: result } = await tvApi.tvDetail(parsedId);
         setState({ ...state, result, loading: false });
       }
-    } catch {
+    } catch (error) {
       setState({ error: "Can't find anything" });
     } finally {
     }
@@ -43,9 +43,7 @@ const DetailContainer = (props) => {
     getData();
   }, []);
 
-  console.log(state);
   const { result, isMovie, loading, error } = state;
-  console.log(result);
   return (
     <DetailPresenter
       result={result}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { tvApi } from "../../api";
 import TvPresenter from "./TvPresenter";
+import { Helmet } from "react-helmet";
 
 export const TvContainer = () => {
   const [state, setState] = useState({
@@ -22,7 +23,7 @@ export const TvContainer = () => {
       const {
         data: { results: airingToday },
       } = await tvApi.airingToday();
-
+      // throw Error();
       setState({
         topRated,
         popular,
@@ -31,7 +32,7 @@ export const TvContainer = () => {
         error: null,
       });
     } catch (error) {
-      setState({ error: "Can't get the data" });
+      setState({ error: "Sorry Can't get the data" });
     } finally {
     }
   };
@@ -43,13 +44,19 @@ export const TvContainer = () => {
   console.log(state);
   const { topRated, popular, airingToday, loading, error } = state;
   return (
-    <TvPresenter
-      topRated={topRated}
-      popular={popular}
-      airingToday={airingToday}
-      loading={loading}
-      error={error}
-    ></TvPresenter>
+    <>
+      <Helmet>
+        <title>CubsMovie | Tv Shows</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
+      <TvPresenter
+        topRated={topRated}
+        popular={popular}
+        airingToday={airingToday}
+        loading={loading}
+        error={error}
+      ></TvPresenter>
+    </>
   );
 };
 

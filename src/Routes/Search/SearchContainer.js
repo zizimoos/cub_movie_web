@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { movieApi, tvApi } from "../../api";
 import SearchPresenter from "./SearchPresenter";
+import { Helmet } from "react-helmet";
 
 export const SearchContainer = () => {
   const [state, setState] = useState({
@@ -43,7 +44,7 @@ export const SearchContainer = () => {
         error,
       });
     } catch {
-      setState({ error: "Can't find results" });
+      setState({ error: "Sorry Can't find results" });
     } finally {
     }
   };
@@ -51,15 +52,21 @@ export const SearchContainer = () => {
   console.log(state);
   const { movieResults, tvResults, searchTerm, loading, error } = state;
   return (
-    <SearchPresenter
-      movieResults={movieResults}
-      tvResults={tvResults}
-      loading={loading}
-      searchTerm={searchTerm}
-      error={error}
-      handleSubmit={handleSubmit}
-      updateTerm={updateTerm}
-    ></SearchPresenter>
+    <>
+      <Helmet>
+        <title>CubsMovie | Search</title>
+        <meta name="description" content="Helmet application" />
+      </Helmet>
+      <SearchPresenter
+        movieResults={movieResults}
+        tvResults={tvResults}
+        loading={loading}
+        searchTerm={searchTerm}
+        error={error}
+        handleSubmit={handleSubmit}
+        updateTerm={updateTerm}
+      ></SearchPresenter>
+    </>
   );
 };
 
