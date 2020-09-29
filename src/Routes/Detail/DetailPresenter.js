@@ -3,6 +3,15 @@ import styled from "styled-components";
 import Loader from "Components/Loader";
 import Message from "Components/Message";
 import { Helmet } from "react-helmet";
+// import InsideMenuMovie from "../InsideMenuMovie/insideMenuMovie";
+// import InsideMenuTv from "../InsideMenuTv";
+import { withRouter, Link, Route } from "react-router-dom";
+import SubMovie from "../InsideMenu/SubMovie";
+import Production from "../InsideMenu/Production";
+import Country from "../InsideMenu/Country";
+import Pcompany from "../InsideMenu/Pcompany";
+import CreatedBy from "../InsideMenu/CreatedBy";
+import Seasons from "../InsideMenu/Seasons";
 
 const Container = styled.div`
   height: calc(100vh);
@@ -22,7 +31,7 @@ const Backdrop = styled.div`
   background-position: center;
   z-index: 0;
   opacity: 0.3;
-  filter: blur(3px);
+  /* filter: blur(3px); */
 `;
 const Content = styled.div`
   display: flex;
@@ -51,9 +60,12 @@ const Title = styled.span`
   margin-bottom: 10px;
 `;
 const ItemContainer = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
-const Item = styled.span``;
+const Item = styled.span`
+  position: relative;
+  line-height: 1.5;
+`;
 const Divider = styled.span`
   margin: 0px 10px;
 `;
@@ -64,100 +76,172 @@ const Overview = styled.p`
   line-height: 1.3;
 `;
 
-const DetailPresenter = ({ result, isMovie, loading, error }) => {
-  return loading ? (
-    <>
-      <Loader></Loader>
-      <Helmet>
-        <title>CubsMovie | Loading</title>
-      </Helmet>
-    </>
-  ) : error ? (
-    <Message text={"sorry"}></Message>
-  ) : (
-    <Container>
-      <Helmet>
-        <title>
-          {result.original_title ? result.original_title : result.original_name}{" "}
-          | CubsMovie
-        </title>
-        <meta name="description" content="Helmet application" />
-      </Helmet>
-      <Backdrop
-        bgImage={
-          result.backdrop_path
-            ? `https://image.tmdb.org/t/p/original${result.backdrop_path}`
-            : require("../../asset/img/tessa.jpg")
-        }
-      ></Backdrop>
-      <Content>
-        <Cover
-          posterImage={
-            result.poster_path
-              ? `https://image.tmdb.org/t/p/original${result.poster_path}`
-              : require("../../asset/img/tessa.jpg")
-          }
-        ></Cover>
-        <Data>
-          <Title>
+const Imdb = styled.a`
+  display: inline-block;
+  position: absolute;
+  top: -4px;
+  right: -50px;
+  width: 44px;
+  height: 22px;
+  border-radius: 2px;
+  background-image: url(${(props) => props.src});
+  background-position: center center;
+  background-size: cover;
+  cursor: pointer;
+`;
+
+const InsideMenu = styled("div")`
+  margin: 5px 0px;
+`;
+const List = styled("ul")`
+  margin-top: 20px;
+  display: flex;
+`;
+const Slink = styled(Link)`
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const Li = styled("li")`
+  width: 150px;
+  margin-right: 0px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  border-bottom: 1px solid ${(props) => (props.active ? "dodgerblue" : "gray")};
+  padding: 0px;
+
+  background-color: ${(props) => (props.active ? "dodgerblue" : "transparent")};
+  color: ${(props) => (props.active ? "white" : "dodgerblue")};
+`;
+
+const DetailPresenter = withRouter(
+  ({ location: { pathname }, result, isMovie, loading, error }) => {
+    return loading ? (
+      <>
+        <Loader></Loader>
+        <Helmet>
+          <title>CubsMovie | Loading</title>
+        </Helmet>
+      </>
+    ) : error ? (
+      <Message text={"sorry"}></Message>
+    ) : (
+      <Container>
+        <Helmet>
+          <title>
             {result.original_title
               ? result.original_title
-              : result.original_name}
-          </Title>
-          <ItemContainer>
-            <Item>
-              {result.release_date
-                ? result.release_date
-                : result.first_air_date}
-            </Item>
-            <Divider> ● </Divider>
-            <Item>
-              {result.runtime
-                ? result.runtime
-                : result.episode_run_time[0]
-                ? result.episode_run_time[0]
-                : `100min`}
-              min
-            </Item>
-            <Divider> ● </Divider>
-            <Item>{result.original_language}</Item>
-            <Divider> ● </Divider>
-            <Item>{result.status}</Item>
-            <Divider> ● </Divider>
-            <Item>
-              {result &&
-                result.genres.map((g, index) =>
-                  index === result.genres.length - 1 ? g.name : `${g.name} / `
-                )}
-            </Item>
-            <Divider> ● </Divider>
-            <Item> ★ {result.vote_average ? result.vote_average : null}</Item>
-            <Divider> ● </Divider>
-            <Item>{result.imdb_id ? result.imdb_id : null}</Item>
-          </ItemContainer>
+              : result.original_name}{" "}
+            | CubsMovie
+          </title>
+          <meta name="description" content="Helmet application" />
+        </Helmet>
+        <Backdrop
+          bgImage={
+            result.backdrop_path
+              ? `https://image.tmdb.org/t/p/original${result.backdrop_path}`
+              : require("../../asset/img/tessa.jpg")
+          }
+        ></Backdrop>
+        <Content>
+          <Cover
+            posterImage={
+              result.poster_path
+                ? `https://image.tmdb.org/t/p/original${result.poster_path}`
+                : require("../../asset/img/tessa.jpg")
+            }
+          ></Cover>
+          <Data>
+            <Title>
+              {result.original_title
+                ? result.original_title
+                : result.original_name}
+            </Title>
+            <ItemContainer>
+              <Item>
+                {result.release_date
+                  ? result.release_date
+                  : result.first_air_date}
+              </Item>
+              <Divider> ● </Divider>
+              <Item>
+                {result.runtime ? result.runtime : result.episode_run_time[0]}
+                min
+              </Item>
+              <Divider> ● </Divider>
+              <Item>{result.original_language}</Item>
+              <Divider> ● </Divider>
+              <Item>{result.status}</Item>
+              <Divider> ● </Divider>
+              <Item>
+                {result &&
+                  result.genres.map((g, index) =>
+                    index === result.genres.length - 1 ? g.name : `${g.name} / `
+                  )}
+              </Item>
+              <Divider> ● </Divider>
+              <Item>
+                {" "}
+                ★ {result.vote_average ? result.vote_average : null} / 10
+              </Item>
+              <Divider> ● </Divider>
+              <Item>
+                <Imdb
+                  href={`https://www.imdb.com/title/${result.imdb_id}`}
+                  target={"_blank"}
+                  src={require("../../asset/img/logoImdb.png")}
+                />
+              </Item>
+            </ItemContainer>
+            <Overview>{result.overview}</Overview>
 
-          <Overview>{result.overview}</Overview>
+            {pathname.includes("movie") ? (
+              <InsideMenu>
+                <List>
+                  <Li active={pathname === `/movie/${result.id}`}>
+                    <Slink to={`/movie/${result.id}/subMovie`}>YouTube</Slink>
+                  </Li>
+                  <Li active={pathname === `/movie/${result.id}/production`}>
+                    <Slink to={`/movie/${result.id}/production`}>
+                      Created By
+                    </Slink>
+                  </Li>
+                  <Li active={pathname === `/movie/${result.id}/country`}>
+                    <Slink to={`/movie/${result.id}/country`}>Country</Slink>
+                  </Li>
+                </List>
+              </InsideMenu>
+            ) : (
+              <InsideMenu>
+                <List>
+                  <Li active={pathname === `/tv/${result.id}/pCompany`}>
+                    <Slink to={`/tv/${result.id}/pCompany`}>
+                      youtube video
+                    </Slink>
+                  </Li>
+                  <Li active={pathname === `/tv/${result.id}/createdBy`}>
+                    <Slink to={`/tv/${result.id}/createdBy`}>Created By</Slink>
+                  </Li>
+                  <Li active={pathname === `/tv/${result.id}/seasons`}>
+                    <Slink to={`/tv/${result.id}/seasons`}>Seasons</Slink>
+                  </Li>
+                </List>
+              </InsideMenu>
+            )}
 
-          <div>
-            {result &&
-              result.production_companies.map((g, index) => (
-                <div key={index}>
-                  {g.id} / {g.name} / {g.logo_path} / {g.origin_country}
-                </div>
-              ))}
-          </div>
-          <div>
-            {result &&
-              result.videos.results.map((g, index) => (
-                <div key={index}>
-                  {g.name}/{g.id} / {g.key} / {g.type} / {g.size}
-                </div>
-              ))}
-          </div>
-        </Data>
-      </Content>
-    </Container>
-  );
-};
+            <Route path="/movie/:id" component={SubMovie}></Route>
+            <Route path="/movie/:id/production" component={Production}></Route>
+            <Route path="/movie/:id/country" component={Country}></Route>
+            <Route path="/tv/:id/pCompany" component={Pcompany}></Route>
+            <Route path="/tv/:id/createdBy" component={CreatedBy}></Route>
+            <Route path="/tv/:id/seasons" component={Seasons}></Route>
+          </Data>
+        </Content>
+      </Container>
+    );
+  }
+);
 
 export default DetailPresenter;
