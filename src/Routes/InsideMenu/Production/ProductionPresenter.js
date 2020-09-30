@@ -42,8 +42,8 @@ const Pname = styled.div`
 `;
 
 const ProductBox = styled.div`
-  width: 210px;
-  height: 210px;
+  width: 180px;
+  height: 180px;
   margin-top: 20px;
   margin-bottom: 20px;
 `;
