@@ -41,7 +41,7 @@ const Content = styled.div`
 
 const Cover = styled.div`
   width: 40%;
-  height: 100%;
+  height: 130%;
   /* margin-left: 50px; */
 
   background-image: url(${(props) => props.bgUrl});
