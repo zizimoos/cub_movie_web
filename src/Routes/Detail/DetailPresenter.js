@@ -1,56 +1,61 @@
 import React from "react";
 import styled from "styled-components";
-import Loader from "Components/Loader";
-import Message from "Components/Message";
+import Loader from "../../Components/Loader";
 import { Helmet } from "react-helmet";
-// import InsideMenuMovie from "../InsideMenuMovie/insideMenuMovie";
-// import InsideMenuTv from "../InsideMenuTv";
-import { withRouter, Link, Route } from "react-router-dom";
+
+import { Route, Link, withRouter, Redirect } from "react-router-dom";
 import SubMovie from "../InsideMenu/SubMovie";
 import Production from "../InsideMenu/Production";
-import Country from "../InsideMenu/Country";
+import Cast from "../InsideMenu/Cast";
 import Pcompany from "../InsideMenu/Pcompany";
 import CreatedBy from "../InsideMenu/CreatedBy";
 import Seasons from "../InsideMenu/Seasons";
 
 const Container = styled.div`
-  height: calc(100vh);
+  height: calc(130vh);
   width: 100vw;
   position: relative;
-  padding: 20px 20px;
-  padding-top: 50px;
+  padding: 80px 10px 0px 50px;
 `;
+
 const Backdrop = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(${(props) => props.bgImage});
+  background-image: url(${(props) => props.bgUrl});
+  background-position: center center;
   background-size: cover;
-  background-position: center;
   z-index: 0;
-  opacity: 0.3;
-  /* filter: blur(3px); */
+  filter: blur(0px);
+  opacity: 0.4;
 `;
+
 const Content = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
+  z-index: 1;
 `;
+
 const Cover = styled.div`
   width: 40%;
-  height: 100%;
-  background-image: url(${(props) => props.posterImage});
+  height: 70%;
+  /* margin-left: 50px; */
+
+  background-image: url(${(props) => props.bgUrl});
+  background-position: center center;
   background-size: cover;
-  background-position: center;
   border-radius: 5px;
-  z-index: 10;
+  z-index: 1;
 `;
 
 const Data = styled.div`
   width: 60%;
-  padding-left: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+  z-index: 1;
 `;
 
 const Title = styled.span`
@@ -59,6 +64,7 @@ const Title = styled.span`
   color: white;
   margin-bottom: 10px;
 `;
+
 const ItemContainer = styled.div`
   margin-bottom: 20px;
 `;
@@ -69,13 +75,6 @@ const Item = styled.span`
 const Divider = styled.span`
   margin: 0px 10px;
 `;
-const Overview = styled.p`
-  margin-bottom: 20px;
-  width: 70%;
-  text-align: justify;
-  line-height: 1.3;
-`;
-
 const Imdb = styled.a`
   display: inline-block;
   position: absolute;
@@ -89,6 +88,12 @@ const Imdb = styled.a`
   background-size: cover;
   cursor: pointer;
 `;
+const Overview = styled.p`
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: justify;
+  line-height: 1.3;
+`;
 
 const InsideMenu = styled("div")`
   margin: 5px 0px;
@@ -97,11 +102,12 @@ const List = styled("ul")`
   margin-top: 20px;
   display: flex;
 `;
-const Slink = styled(Link)`
-  height: 40px;
+const SLink = styled(Link)`
+  height: 30px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  text-decoration: none;
 `;
 const Li = styled("li")`
   width: 150px;
@@ -111,67 +117,46 @@ const Li = styled("li")`
   font-weight: 400;
   border-bottom: 1px solid ${(props) => (props.active ? "dodgerblue" : "gray")};
   padding: 0px;
-
+  margin-right: 80px;
   background-color: ${(props) => (props.active ? "dodgerblue" : "transparent")};
   color: ${(props) => (props.active ? "white" : "dodgerblue")};
 `;
 
 const DetailPresenter = withRouter(
-  ({ location: { pathname }, result, isMovie, loading, error }) => {
-    return loading ? (
-      <>
-        <Loader></Loader>
-        <Helmet>
-          <title>CubsMovie | Loading</title>
-        </Helmet>
-      </>
-    ) : error ? (
-      <Message text={"sorry"}></Message>
+  ({ location: { pathname }, result, isMovie, error, loading }) =>
+    loading ? (
+      <Loader></Loader>
     ) : (
       <Container>
         <Helmet>
-          <title>
-            {result.original_title
-              ? result.original_title
-              : result.original_name}{" "}
-            | CubsMovie
-          </title>
-          <meta name="description" content="Helmet application" />
+          <title>{result.title ? result.title : result.name} | BCflix</title>
         </Helmet>
         <Backdrop
-          bgImage={
-            result.backdrop_path
-              ? `https://image.tmdb.org/t/p/original${result.backdrop_path}`
-              : require("../../asset/img/tessa.jpg")
-          }
+          bgUrl={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
         ></Backdrop>
         <Content>
           <Cover
-            posterImage={
-              result.poster_path
-                ? `https://image.tmdb.org/t/p/original${result.poster_path}`
-                : require("../../asset/img/tessa.jpg")
-            }
+            bgUrl={`https://image.tmdb.org/t/p/original${result.poster_path}`}
           ></Cover>
           <Data>
-            <Title>
-              {result.original_title
-                ? result.original_title
-                : result.original_name}
-            </Title>
+            <Title>{isMovie ? result.title : result.name}</Title>
             <ItemContainer>
               <Item>
-                {result.release_date
-                  ? result.release_date
-                  : result.first_air_date}
+                {isMovie ? result.release_date : result.first_air_date}
               </Item>
               <Divider> ● </Divider>
               <Item>
-                {result.runtime ? result.runtime : result.episode_run_time[0]}
+                {isMovie ? result.runtime : result.episode_run_time[0]}
                 min
               </Item>
               <Divider> ● </Divider>
-              <Item>{result.original_language}</Item>
+              <Item>
+                {isMovie
+                  ? result.spoken_languages.length > 0
+                    ? result.spoken_languages[0].name
+                    : result.original_language
+                  : result.languages[0]}
+              </Item>
               <Divider> ● </Divider>
               <Item>{result.status}</Item>
               <Divider> ● </Divider>
@@ -196,20 +181,24 @@ const DetailPresenter = withRouter(
               </Item>
             </ItemContainer>
             <Overview>{result.overview}</Overview>
-
+            {isMovie ? (
+              <Redirect to={`/movie/${result.id}/subMovie`}></Redirect>
+            ) : (
+              <Redirect to={`/tv/${result.id}/pCompany`}></Redirect>
+            )}
             {pathname.includes("movie") ? (
               <InsideMenu>
                 <List>
-                  <Li active={pathname === `/movie/${result.id}`}>
-                    <Slink to={`/movie/${result.id}/subMovie`}>YouTube</Slink>
+                  <Li active={pathname === `/movie/${result.id}/subMovie`}>
+                    <SLink to={`/movie/${result.id}/subMovie`}>YouTube</SLink>
+                  </Li>
+                  <Li active={pathname === `/movie/${result.id}/cast`}>
+                    <SLink to={`/movie/${result.id}/cast`}>cast</SLink>
                   </Li>
                   <Li active={pathname === `/movie/${result.id}/production`}>
-                    <Slink to={`/movie/${result.id}/production`}>
+                    <SLink to={`/movie/${result.id}/production`}>
                       Created By
-                    </Slink>
-                  </Li>
-                  <Li active={pathname === `/movie/${result.id}/country`}>
-                    <Slink to={`/movie/${result.id}/country`}>Country</Slink>
+                    </SLink>
                   </Li>
                 </List>
               </InsideMenu>
@@ -217,31 +206,30 @@ const DetailPresenter = withRouter(
               <InsideMenu>
                 <List>
                   <Li active={pathname === `/tv/${result.id}/pCompany`}>
-                    <Slink to={`/tv/${result.id}/pCompany`}>
+                    <SLink to={`/tv/${result.id}/pCompany`}>
                       youtube video
-                    </Slink>
+                    </SLink>
                   </Li>
                   <Li active={pathname === `/tv/${result.id}/createdBy`}>
-                    <Slink to={`/tv/${result.id}/createdBy`}>Created By</Slink>
+                    <SLink to={`/tv/${result.id}/createdBy`}>Created By</SLink>
                   </Li>
                   <Li active={pathname === `/tv/${result.id}/seasons`}>
-                    <Slink to={`/tv/${result.id}/seasons`}>Seasons</Slink>
+                    <SLink to={`/tv/${result.id}/seasons`}>Seasons</SLink>
                   </Li>
                 </List>
               </InsideMenu>
             )}
 
-            <Route path="/movie/:id" component={SubMovie}></Route>
+            <Route path="/movie/:id/subMovie" component={SubMovie}></Route>
             <Route path="/movie/:id/production" component={Production}></Route>
-            <Route path="/movie/:id/country" component={Country}></Route>
+            <Route path="/movie/:id/cast" component={Cast}></Route>
             <Route path="/tv/:id/pCompany" component={Pcompany}></Route>
             <Route path="/tv/:id/createdBy" component={CreatedBy}></Route>
             <Route path="/tv/:id/seasons" component={Seasons}></Route>
           </Data>
         </Content>
       </Container>
-    );
-  }
+    )
 );
 
 export default DetailPresenter;

@@ -25,7 +25,6 @@ export default class extends React.Component {
     } = this.props;
     const { isMovie } = this.state;
     const parsedId = parseInt(id);
-    console.log(".....");
     if (isNaN(parsedId)) {
       return push("/");
     }

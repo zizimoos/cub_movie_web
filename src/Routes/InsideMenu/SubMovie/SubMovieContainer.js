@@ -1,29 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { movieApi } from "../../../api";
 import SubMoviePresenter from "./SubMoviePresenter";
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    const {
-      location: { pathname },
-    } = props;
-    this.state = {
-      result: null,
-      error: null,
-      loading: true,
-      isMovie: pathname.includes("/movie/"),
-    };
-  }
+const SubMovieContainer = (props) => {
+  const {
+    location: { pathname },
+    match: {
+      params: { id },
+    },
+    history: { push },
+  } = props;
 
-  async componentDidMount() {
+  const [state, setState] = useState({
+    result: null,
+    carouselIndex: 0,
+    error: null,
+    loading: true,
+    isMovie: pathname.includes("/movie/"),
+  });
+
+  const onClick = (event) => {
+    console.log(event.target.id);
     const {
-      match: {
-        params: { id },
-      },
-      history: { push },
-    } = this.props;
-    const { isMovie } = this.state;
+      target: { id },
+    } = event;
+    console.log(id);
+    const parsedIndex = parseInt(id);
+    setState({ ...state, carouselIndex: parsedIndex });
+  };
+
+  const getData = async () => {
+    const { isMovie } = state;
     const parsedId = parseInt(id);
     if (isNaN(parsedId)) {
       return push("/");
@@ -33,18 +40,27 @@ export default class extends React.Component {
       if (isMovie) {
         ({ data: result } = await movieApi.movieDetail(parsedId));
       }
+      setState({ loading: false, result, carouselIndex });
     } catch (error) {
-      this.setState({ error: "Can't find anything." });
+      setState({ error: "Can't find anything." });
     } finally {
-      this.setState({ loading: false, result });
     }
-  }
+  };
 
-  render() {
-    const { result, error, loading } = this.state;
-    console.log(result);
-    return (
-      <SubMoviePresenter result={result} error={error} loading={loading} />
-    );
-  }
-}
+  useEffect(() => {
+    getData();
+  }, []);
+  const { result, carouselIndex, error, loading } = state;
+  console.log(result);
+  return (
+    <SubMoviePresenter
+      result={result}
+      error={error}
+      carouselIndex={carouselIndex}
+      loading={loading}
+      onClick={onClick}
+    />
+  );
+};
+
+export default SubMovieContainer;

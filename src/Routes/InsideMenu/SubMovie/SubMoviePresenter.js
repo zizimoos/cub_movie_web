@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Loader from "Components/Loader";
@@ -23,6 +22,8 @@ const Content = styled.div`
   font-size: 13px;
   line-height: 2;
 `;
+
+const ListBox = styled.div``;
 const Li = styled.li`
   list-style: none;
   a {
@@ -30,26 +31,51 @@ const Li = styled.li`
     text-decoration: none;
   }
 `;
-const YouTubePlay = styled.div`
+const YoutTubeCauroselContainer = styled.div`
+  margin-top: 20px;
   position: relative;
   width: 100%;
-  margin-top: 10px;
-  padding-bottom: 56.25%;
-  iframe {
-    position: absolute;
-    width: 80%;
-    height: 80%;
-  }
+  height: 100%;
+`;
+const YouTubePlay = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  z-index: 10;
+`;
+const CarouselButtonContainer = styled.div`
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  justify-content: center;
+`;
+const CarouselButton = styled.span`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  font-size: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+  color: ${(props) =>
+    props.carouselIndex === props.id ? "white" : "dodgerblue"};
 `;
 
-const SubMoviePresenter = ({ result, loading, error }) =>
+const SubMoviePresenter = ({
+  result,
+  onClick,
+  carouselIndex,
+  loading,
+  error,
+}) =>
   loading ? (
     <Loader />
   ) : (
     <Container>
       {console.log(result.videos)}
+      {console.log("carouselIndex", carouselIndex)}
       <Content>
-        {result.videos.results.map((video) => (
+        <ListBox></ListBox>
+        {result.videos.results.slice(0, 10).map((video) => (
           <Li key={video.id}>
             <FontAwesomeIcon icon={faYoutube} size="1x" />
             <a
@@ -60,25 +86,48 @@ const SubMoviePresenter = ({ result, loading, error }) =>
             </a>{" "}
           </Li>
         ))}
-        <YouTubePlay>
-          <iframe
-            frameBorder="0"
-            allowFullScreen="1"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            title="YouTube video player"
-            width="100%"
-            height="100%"
-            src={`https://www.youtube.com/embed/${result.videos.results[0].key}?autoplay=false&amp;cc_load_policy=0&amp;controls=1&amp;disablekb=0&amp;fs=1&amp;iv_load_policy=1&amp;modestbranding=0&amp;playsinline=0&amp;rel=1&amp;showinfo=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A3000&amp;widgetid=1`}
-          ></iframe>
-        </YouTubePlay>
+        <CarouselButtonContainer>
+          {result.videos.results.slice(0, 10).map((yout, index) => (
+            <CarouselButton
+              onClick={onClick}
+              key={index}
+              id={index}
+              carouselIndex={carouselIndex}
+            >
+              ●
+            </CarouselButton>
+          ))}
+        </CarouselButtonContainer>
+
+        <YoutTubeCauroselContainer>
+          <YouTubePlay>
+            <iframe
+              frameBorder="0"
+              allowFullScreen="1"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              title="YouTube video player"
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${result.videos.results[carouselIndex].key}?autoplay=false&amp;cc_load_policy=0&amp;controls=1&amp;disablekb=0&amp;fs=1&amp;iv_load_policy=1&amp;modestbranding=0&amp;playsinline=0&amp;rel=1&amp;showinfo=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A3000&amp;widgetid=1`}
+            ></iframe>
+          </YouTubePlay>
+
+          {/* {result.videos.results.map((yout, index) => (
+            <YouTubePlay>
+              <iframe
+                frameBorder="0"
+                allowFullScreen="1"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                title="YouTube video player"
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${result.videos.results[index].key}?autoplay=false&amp;cc_load_policy=0&amp;controls=1&amp;disablekb=0&amp;fs=1&amp;iv_load_policy=1&amp;modestbranding=0&amp;playsinline=0&amp;rel=1&amp;showinfo=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A3000&amp;widgetid=1`}
+              ></iframe>
+            </YouTubePlay>
+          ))} */}
+        </YoutTubeCauroselContainer>
       </Content>
     </Container>
   );
-
-SubMoviePresenter.propTypes = {
-  result: PropTypes.object,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
-};
 
 export default SubMoviePresenter;
