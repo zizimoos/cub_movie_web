@@ -22,8 +22,8 @@ const Backdrop = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 150%;
-  height: 150%;
+  width: 100vw;
+  height: 160vh;
   background-image: url(${(props) => props.bgUrl});
   background-position: center center;
   background-size: cover;
