@@ -5,13 +5,13 @@ import Loader from "Components/Loader";
 
 const Container = styled.div`
   /* height: calc(100vh - 50px); */
-  width: 500px;
+  width: 100%;
   position: relative;
   padding: 10px;
 `;
 
 const Content = styled.div`
-  width: 500px;
+  width: 100%;
   display: flex;
   flex-direction: space-around;
   flex-wrap: wrap;
@@ -22,8 +22,8 @@ const Content = styled.div`
 `;
 
 const Production = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 200px;
+  height: 200px;
   margin-right: 5px;
   background-color: white;
   background-image: url(${(props) => props.bgImage});
@@ -41,8 +41,8 @@ const Pname = styled.div`
 `;
 
 const ProductBox = styled.div`
-  width: 110px;
-  height: 110px;
+  width: 210px;
+  height: 210px;
   margin-top: 20px;
   margin-bottom: 20px;
 `;

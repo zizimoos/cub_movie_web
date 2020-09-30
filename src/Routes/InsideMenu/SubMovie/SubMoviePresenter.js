@@ -73,46 +73,47 @@ const SubMoviePresenter = ({
     <Container>
       {console.log(result.videos)}
       {console.log("carouselIndex", carouselIndex)}
-      <Content>
-        <ListBox></ListBox>
-        {result.videos.results.slice(0, 10).map((video) => (
-          <Li key={video.id}>
-            <FontAwesomeIcon icon={faYoutube} size="1x" />
-            <a
-              href={`http://youtube.com/watch?v=${video.key}`}
-              alt={video.name}
-            >
-              {video.name}
-            </a>{" "}
-          </Li>
-        ))}
-        <CarouselButtonContainer>
-          {result.videos.results.slice(0, 10).map((yout, index) => (
-            <CarouselButton
-              onClick={onClick}
-              key={index}
-              id={index}
-              carouselIndex={carouselIndex}
-            >
-              ●
-            </CarouselButton>
+      {result.videos.results.length < 1 ? null : (
+        <Content>
+          <ListBox></ListBox>
+          {result.videos.results.slice(0, 10).map((video) => (
+            <Li key={video.id}>
+              <FontAwesomeIcon icon={faYoutube} size="1x" />
+              <a
+                href={`http://youtube.com/watch?v=${video.key}`}
+                alt={video.name}
+              >
+                {video.name}
+              </a>{" "}
+            </Li>
           ))}
-        </CarouselButtonContainer>
+          <CarouselButtonContainer>
+            {result.videos.results.slice(0, 10).map((yout, index) => (
+              <CarouselButton
+                onClick={onClick}
+                key={index}
+                id={index}
+                carouselIndex={carouselIndex}
+              >
+                ●
+              </CarouselButton>
+            ))}
+          </CarouselButtonContainer>
 
-        <YoutTubeCauroselContainer>
-          <YouTubePlay>
-            <iframe
-              frameBorder="0"
-              allowFullScreen="1"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              title="YouTube video player"
-              width="100%"
-              height="100%"
-              src={`https://www.youtube.com/embed/${result.videos.results[carouselIndex].key}?autoplay=false&amp;cc_load_policy=0&amp;controls=1&amp;disablekb=0&amp;fs=1&amp;iv_load_policy=1&amp;modestbranding=0&amp;playsinline=0&amp;rel=1&amp;showinfo=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A3000&amp;widgetid=1`}
-            ></iframe>
-          </YouTubePlay>
+          <YoutTubeCauroselContainer>
+            <YouTubePlay>
+              <iframe
+                frameBorder="0"
+                allowFullScreen="1"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                title="YouTube video player"
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${result.videos.results[carouselIndex].key}?autoplay=false&amp;cc_load_policy=0&amp;controls=1&amp;disablekb=0&amp;fs=1&amp;iv_load_policy=1&amp;modestbranding=0&amp;playsinline=0&amp;rel=1&amp;showinfo=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A3000&amp;widgetid=1`}
+              ></iframe>
+            </YouTubePlay>
 
-          {/* {result.videos.results.map((yout, index) => (
+            {/* {result.videos.results.map((yout, index) => (
             <YouTubePlay>
               <iframe
                 frameBorder="0"
@@ -125,8 +126,9 @@ const SubMoviePresenter = ({
               ></iframe>
             </YouTubePlay>
           ))} */}
-        </YoutTubeCauroselContainer>
-      </Content>
+          </YoutTubeCauroselContainer>
+        </Content>
+      )}
     </Container>
   );
 

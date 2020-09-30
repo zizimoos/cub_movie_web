@@ -53,6 +53,7 @@ const Cover = styled.div`
 
 const Data = styled.div`
   width: 60%;
+  height: 70%;
   padding-left: 50px;
   padding-right: 50px;
   z-index: 1;
@@ -110,14 +111,14 @@ const SLink = styled(Link)`
   text-decoration: none;
 `;
 const Li = styled("li")`
-  width: 150px;
+  width: 250px;
   margin-right: 0px;
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 400;
   border-bottom: 1px solid ${(props) => (props.active ? "dodgerblue" : "gray")};
   padding: 0px;
-  margin-right: 80px;
+  margin-right: 100px;
   background-color: ${(props) => (props.active ? "dodgerblue" : "transparent")};
   color: ${(props) => (props.active ? "white" : "dodgerblue")};
 `;
