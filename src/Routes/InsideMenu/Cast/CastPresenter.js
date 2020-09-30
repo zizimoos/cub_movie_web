@@ -52,7 +52,7 @@ const CastPresenter = ({ cast, loading }) => {
   ) : (
     <Container>
       <Content>
-        {cast.slice(0, 18).map((c) => (
+        {cast.slice(0, 15).map((c) => (
           <ProductBox>
             <Pname>{c.name.slice(0, 16)}</Pname>
             <Production
