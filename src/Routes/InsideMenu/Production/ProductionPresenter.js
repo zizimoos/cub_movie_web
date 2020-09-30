@@ -7,13 +7,13 @@ const Container = styled.div`
   /* height: calc(100vh - 50px); */
   width: 100%;
   position: relative;
-  padding: 10px;
+  /* padding: 10px; */
 `;
 
 const Content = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: space-around;
+  flex-direction: space-between;
   flex-wrap: wrap;
   width: 100%;
   height: 100%;
