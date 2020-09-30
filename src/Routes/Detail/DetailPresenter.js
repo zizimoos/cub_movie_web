@@ -12,7 +12,7 @@ import CreatedBy from "../InsideMenu/CreatedBy";
 import Seasons from "../InsideMenu/Seasons";
 
 const Container = styled.div`
-  height: calc(130vh);
+  height: calc(100vh);
   width: 100vw;
   position: relative;
   padding: 80px 10px 0px 50px;
@@ -22,8 +22,8 @@ const Backdrop = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 150%;
+  height: 150%;
   background-image: url(${(props) => props.bgUrl});
   background-position: center center;
   background-size: cover;
