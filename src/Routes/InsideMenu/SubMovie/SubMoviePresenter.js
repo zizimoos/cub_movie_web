@@ -108,7 +108,7 @@ const SubMoviePresenter = ({
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                 title="YouTube video player"
                 width="100%"
-                height="100%"
+                height="40%"
                 src={`https://www.youtube.com/embed/${result.videos.results[carouselIndex].key}?autoplay=false&amp;cc_load_policy=0&amp;controls=1&amp;disablekb=0&amp;fs=1&amp;iv_load_policy=1&amp;modestbranding=0&amp;playsinline=0&amp;rel=1&amp;showinfo=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A3000&amp;widgetid=1`}
               ></iframe>
             </YouTubePlay>
